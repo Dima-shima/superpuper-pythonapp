@@ -29,6 +29,7 @@ jobs:
         echo "This job is executed on runner OS: ${{ runner.os }}"
     - run: |
         echo "Branch: ${{ github.ref }}"
+    - run: |
         echo "Repository: ${{ github.repository }}"
     - run: |
         echo "Job status: ${{ job.status }}"

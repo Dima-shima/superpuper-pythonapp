@@ -9,9 +9,6 @@ env:
 
 # Controls when the workflow will run
 on:
-  schedule:
-    - cron: '*/15 * * * *'
-
   pull_request:
     branches: [ "main" ]
 

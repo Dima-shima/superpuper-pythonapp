@@ -126,6 +126,6 @@ def test_external_call(client):
 
         response = client.get('/external-call')
 
-        assert b'Extarnal call response: Success' in response.data
+        assert b'External call response: Success' in response.data
 
         assert response.status_code == 200

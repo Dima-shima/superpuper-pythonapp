@@ -117,11 +117,11 @@ jobs:
           path: ./*.tgz
 
   deploy-helm-dev:
-  name: Deploy Helm
-  uses: C:\Users\home\superpuper-pythonapp\.github\workflows\deployment-workflow.yml
-  needs: [helm-ci, build-image]
-  secrets: inherit
-  with:
-    environment: development
-    version: ${{ github.sha }}
+    name: Deploy Helm
+    uses: C:\Users\home\superpuper-pythonapp\.github\workflows\deployment-workflow.yml
+    needs: [helm-ci, build-image]
+    secrets: inherit
+    with:
+      environment: development
+      version: ${{ github.sha }}
 

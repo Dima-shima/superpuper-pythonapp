@@ -18,8 +18,6 @@ jobs:
     defaults:
         run:
           working-directory: ./src
-
-
     steps:
       - uses: actions/checkout@v4
 
@@ -63,8 +61,6 @@ jobs:
           name: helm-artifacts
           path: ${{ github.workspace }}/helm-charts
 
-
-
   build-image:
     name: Build and Push Image
     needs: ['python-ci']
@@ -94,19 +90,42 @@ jobs:
     needs: ['python-ci']
     runs-on: ubuntu-latest
     if: ${{ github.ref_name == 'main' }}
+    name: Helm CI
 
     steps:
       - uses: actions/download-artifact@v4
         with:
           name: helm-artifacts
           path: .
+      
+      - name: Set up Helm
+        uses: azure/setup-helm@v4.2.0
 
+      - name: Lint Helm
+        run: helm lint ./kube2py/
 
+      - name: Template Helm
+        run: helm template kube2py ./kube2py -f ./kube2py/values.yaml
 
+      - name: Package Helm
+        run: helm package ./kube2py/
 
+      - name: Upload Helm package
+        uses: actions/upload-artifact@v4
+        with:
+          name: helm-package
+          path: ./*.tgz
 
+  deploy-helm:
+    name: Deploy Helm
+    needs: [helm-ci, build-image]
+    runs-on: ubuntu-latest
 
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: helm-package
+          path: .
 
-
-
-
+      - name: Set up Helm
+        uses: azure/setup-helm@v4.2.0
